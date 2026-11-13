@@ -27,7 +27,7 @@ public abstract class BaseTile extends TileService {
             Tile t = getQsTile();
             if (t == null) return;
             t.setIcon(Icon.createWithResource(this, b ? crossed() : normal()));
-            t.setState(b ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE);
+            t.setState(b ? Tile.STATE_INACTIVE : Tile.STATE_ACTIVE);
             t.updateTile();
         }).start();
     }
@@ -35,6 +35,6 @@ public abstract class BaseTile extends TileService {
     @Override public void onStartListening() { refresh(); }
 
     @Override public void onClick() {
-        new Thread(() -> { su(S + key()); refresh(); }).start();
+        Tile t = getQsTile(); boolean on = t.getState() == Tile.STATE_ACTIVE; t.setIcon(Icon.createWithResource(this, on ? crossed() : normal())); t.setState(on ? Tile.STATE_INACTIVE : Tile.STATE_ACTIVE); t.updateTile(); new Thread(() -> { su(S + key()); refresh(); }).start();
     }
 }
